@@ -1,7 +1,7 @@
 (ns example.systems.client
   (:require [example.utils.ctr :as ctr]
             [example.utils.config :refer [config]]
-            [example.utils.system :refer [make-system-map all-using all-used-by merge-deps start]]
+            [example.utils.system :refer [expand make-system-map all-using all-used-by merge-deps start]]
             [quile.component
              :as component :refer [Lifecycle system-map system-using using]]
             [schema.core :as s :include-macros true]
@@ -24,6 +24,10 @@
                     (make-system-map (config)))]
     (-> system
         (system-using (new-dependency-map system)))))
+
+(defn start [system]
+  (expand system {:before-start [[utils/validate-class]]
+                  :after-start []}))
 
 (defn main []
   (try (-> (new-production-system)

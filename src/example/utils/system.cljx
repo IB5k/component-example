@@ -4,8 +4,7 @@
             [#+clj  com.stuartsierra.component
              #+cljs quile.component
              :as component :refer [system-map system-using using]]
-            #+clj  [modular.component.co-dependency
-                    :as co-dep :refer (co-using system-co-using)]
+            #+clj  [tangrammer.component.co-dependency :as co-dep]
             #+clj  [plumbing.core :refer :all]
             #+cljs [plumbing.core :refer (map-vals) :refer-macros (defnk fnk)]
             #+clj [clojure.java.io :as io]
@@ -69,8 +68,7 @@
 ;; taken from https://github.com/milesian/BigBang/blob/master/src/milesian/bigbang.clj
 (defn expand
   [system-map {:keys [before-start after-start]}]
-  (let [on-start-sequence (apply conj before-start (cons [component/start]
-                                                         after-start))
+  (let [on-start-sequence (apply conj before-start (cons [component/start] after-start))
         start (fn [c & args]
                 (apply (->> on-start-sequence
                             (mapv (fn [[f & args]]
@@ -79,6 +77,3 @@
                             (apply comp))
                        (conj args c)))]
     (component/update-system system-map (keys system-map) start)))
-
-(defn start [system]
-  (expand system {:before-start [[validate-class]]}))

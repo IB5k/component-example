@@ -4,7 +4,7 @@
             [example.utils.config :refer [config]]
             [example.utils.system :refer [make-system-map all-using all-used-by merge-deps]]
             [com.stuartsierra.component :as component :refer [system-map system-using using]]
-            [modular.component.co-dependency :refer (co-using system-co-using)]
+            [tangrammer.component.co-dependency :refer (co-using system-co-using)]
             [example.utils.maker :refer [make]]))
 
 (defn visualization [system config]

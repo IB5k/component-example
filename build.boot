@@ -20,7 +20,8 @@
             :clojurescript [[org.clojure/clojurescript "0.0-3196"]]
             :component
             {:clj          [[com.stuartsierra/component "0.2.3"]
-                            [juxt.modular/co-dependency "0.2.0"]]
+                            [tangrammer/co-dependency "0.1.5"]
+                            [milesian/aop "0.1.5"]]
              :cljs         [[quile/component-cljs "0.2.4"]]}
             :filesystem
             {:io           [[me.raynes/fs "1.4.6"]]}
@@ -132,7 +133,7 @@
    (reload :port 3449)
    (cljs-repl :port 3448)
    (reload-system :system-var 'dev/new-development-system
-                  :start-var 'example.utils.system/start)
+                  :start-var 'example.systems.server/start)
    (reload-system-cljs :system-var 'example.systems.client/new-production-system
                        :start-var 'example.utils.system/start)
    (garden :pretty-print true)

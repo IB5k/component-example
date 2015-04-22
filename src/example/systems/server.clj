@@ -1,7 +1,7 @@
 (ns example.systems.server
   (:require [example.utils.config :refer [config]]
             [example.utils.nrepl]
-            [example.utils.system :refer [make-system-map all-using all-used-by merge-deps]]
+            [example.utils.system :refer [expand make-system-map all-using all-used-by merge-deps]]
             [com.stuartsierra.component :refer [system-map system-using]]
             [modular.bidi]
             [bidi.bidi :refer (RouteProvider)]
@@ -63,3 +63,10 @@
     (-> system
         (system-using (new-dependency-map system))
         (system-co-using (new-co-dependency-map system)))))
+
+(defn start [system]
+  (let [system-atom (atom system)]
+    (expand system {:before-start [[identity/add-meta-key system]
+                                   [co-dependency/assoc-co-dependencies system-atom]
+                                   [utils/validate-class]]
+                    :after-start [[co-dependency/update-atom-system system-atom]]})))

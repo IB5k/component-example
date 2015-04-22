@@ -1,12 +1,8 @@
 (ns example.utils.ctr
-  (:require #+clj [com.stuartsierra.component :as component]
+  (:require #+clj  [com.stuartsierra.component :as component]
             #+cljs [quile.component :as component]
-            #+clj [modular.component.co-dependency :as co-dep]
-            #+clj [plumbing.core :refer [defnk <-] :exclude [update]]
-            #+cljs [plumbing.core :refer-macros [defnk <-]]
             [schema.core :as s :include-macros true]
-            [schema.utils :refer [class-schema]]
-            [taoensso.encore :refer (merge-deep)]))
+            [schema.utils :refer [class-schema]]))
 
 (defn wrap-kargs
   "call f with a {} of options

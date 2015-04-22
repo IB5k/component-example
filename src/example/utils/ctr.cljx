@@ -42,16 +42,11 @@
   (fn [opts]
     (when-let [schema (:schema (class-schema klass))]
       (s/validate (select-keys schema (keys opts)) (select-keys opts (keys schema))))
-    (-> (f opts)
-        (with-meta {:class klass}))))
+    (f opts)))
 
 (defn validate-class
   [instance]
-  (when-let [schema (some-> instance
-                            meta
-                            :class
-                            class-schema
-                            :schema)]
+  (when-let [schema (some-> instance class class-schema :schema)]
     (->> (select-keys instance (map ensure-key (keys schema)))
          (s/validate schema)))
   instance)

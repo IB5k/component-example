@@ -133,7 +133,7 @@
    (cljs-repl :port 3448)
    (reload-system :system-var 'dev/new-development-system
                   :start-var 'example.utils.system/start)
-   (reload-system-cljs :system-var 'example.systems.history/new-production-system
+   (reload-system-cljs :system-var 'example.systems.client/new-production-system
                        :start-var 'example.utils.system/start)
    (garden :pretty-print true)
    (cljs :source-map true

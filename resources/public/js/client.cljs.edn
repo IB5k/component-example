@@ -1,0 +1,2 @@
+{:require  [detached.systems.client]
+ :init-fns [detached.systems.client/main]}

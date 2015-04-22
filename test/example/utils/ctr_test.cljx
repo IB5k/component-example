@@ -1,6 +1,6 @@
 (ns example.utils.ctr-test
   #+clj
-  (:require [example.utils.component :as cmp]
+  (:require [example.utils.ctr :as ctr]
             [clojure.set :as set]
             [clojure.test :refer :all]
             [clojure.test.check.clojure-test :refer :all]
@@ -9,7 +9,7 @@
             [clojure.test.check.properties :as prop]
             [schema.core :as s])
   #+cljs
-  (:require [example.utils.component :as cmp]
+  (:require [example.utils.ctr :as ctr]
             [clojure.set :as set]
             [cemerick.cljs.test :as t]
             [cljs.test.check.cljs-test :refer-macros (defspec)]
@@ -22,14 +22,14 @@
                     :refer (is deftest with-test run-tests testing test-var)]))
 
 (deftest empty-kargs
-  (let [f (cmp/wrap-kargs identity)]
+  (let [f (ctr/wrap-kargs identity)]
     (is (= {} (f)))
     (is (= {} (f nil)))
     (is (= {} (f {})))))
 
 (defspec kargs-vs-map
   10
-  (let [f (cmp/wrap-kargs identity)]
+  (let [f (ctr/wrap-kargs identity)]
     (prop/for-all [v (gen/map gen/any gen/any)]
                   (= (f v)
                      (apply f (apply concat v))))))
@@ -39,14 +39,14 @@
 
 (with-test (def new-test-record
              (-> map->TestRecord
-                 (cmp/wrap-class-validation TestRecord)
-                 (cmp/wrap-defaults {:num 0})
-                 (cmp/wrap-kargs)))
+                 (ctr/wrap-class-validation TestRecord)
+                 (ctr/wrap-defaults {:num 0})
+                 (ctr/wrap-kargs)))
   (is (= (:num (new-test-record))
          0))
   (is (not (:str (new-test-record))))
   (is (thrown? #+clj Exception #+cljs js/Error
                (-> (new-test-record)
-                   (cmp/validate-class))))
+                   (ctr/validate-class))))
   (is (-> (new-test-record :str "string")
-          (cmp/validate-class))))
+          (ctr/validate-class))))

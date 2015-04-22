@@ -1,5 +1,5 @@
 (ns dev-components.visualization
-  (:require [detached.utils.component :refer :all]
+  (:require [example.utils.ctr :as ctr]
             [clojure.pprint :refer (pprint)]
             [clojure.string :as str]
             [com.stuartsierra.component :as component :refer (Lifecycle)]
@@ -111,9 +111,9 @@
 
 (def new-system-visualizer
   (-> map->SystemVisualizer
-      (wrap-class-validation SystemVisualizer)
-      (wrap-defaults {:system {}
+      (ctr/wrap-class-validation SystemVisualizer)
+      (ctr/wrap-defaults {:system {}
                       :clusters {}
                       :options {}
                       :output-dir "./resources/viz"})
-      (wrap-kargs)))
+      (ctr/wrap-kargs)))

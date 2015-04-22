@@ -4,6 +4,7 @@
             [example.utils.system :refer [make-system-map all-using all-used-by merge-deps]]
             [com.stuartsierra.component :refer [system-map system-using]]
             [modular.bidi]
+            [bidi.bidi :refer (RouteProvider)]
             [modular.component.co-dependency :refer (system-co-using)]
             [modular.http-kit]
             [modular.ring :refer (WebRequestMiddleware)]))

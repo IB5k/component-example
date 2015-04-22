@@ -1,0 +1,2 @@
+{:web {:port 3000}
+ :nrepl {:port 3001}}

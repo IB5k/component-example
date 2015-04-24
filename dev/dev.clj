@@ -1,10 +1,7 @@
 (ns dev
   (:require [dev-components.visualization :refer (new-system-visualizer)]
-            [example.systems.server :refer :all]
+            [example.systems.server :refer (new-production-system)]
             [example.utils.config :refer [config]]
-            [example.utils.system :refer [make-system-map all-using all-used-by merge-deps]]
-            [com.stuartsierra.component :as component :refer [system-map system-using using]]
-            [tangrammer.component.co-dependency :refer (co-using system-co-using)]
             [example.utils.maker :refer [make]]))
 
 (defn visualization [system config]
@@ -12,17 +9,10 @@
          :visualization (make new-system-visualizer config
                               :output-dir "./viz"
                               :options {:dpi 100}
-                              :system (new-production-system)
-                              :clusters (->> (for [[cluster cmps] components]
-                                               [(str cluster)
-                                                (make-system-map config cmps)])
-                                             (into {})))))
+                              :system system)))
 
 (defn new-development-system
   []
-  (let [config (config)
-        s-map (-> (new-system-map config)
-                  (visualization config))]
-    (-> s-map
-        (system-using (new-dependency-map s-map))
-        (system-co-using (new-co-dependency-map s-map)))))
+  (let [config (config)]
+    (-> (new-production-system)
+        (visualization config))))

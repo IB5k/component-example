@@ -1,72 +1,57 @@
 (ns example.systems.server
   (:require [example.utils.config :refer [config]]
-            [example.utils.nrepl]
-            [example.utils.system :refer [expand make-system-map all-using all-used-by merge-deps]]
-            [com.stuartsierra.component :refer [system-map system-using]]
-            [modular.bidi]
+            [example.utils.maker :refer [make]]
+            [example.utils.system :refer [expand]]
             [bidi.bidi :refer (RouteProvider)]
-            [modular.component.co-dependency :refer (system-co-using)]
+            [com.stuartsierra.component :refer [system-map]]
+            [ib5k.component.ctr :as ctr]
+            [ib5k.component.using-schema :refer [system-using-schema]]
+            [milesian.identity :as identity]
+            [modular.bidi]
             [modular.http-kit]
-            [modular.ring :refer (WebRequestMiddleware)]))
+            [modular.ring :refer (WebRequestMiddleware)]
+            [plumbing.core :refer :all]
+            [schema.core :as s]
+            [tangrammer.component.co-dependency :as co-dependency]))
 
 (defrecord ExampleMiddleware []
   WebRequestMiddleware
   (request-middleware [_] identity))
 
-(def components
-  {:dev
-   {:nrepl
-    {:ctr example.utils.nrepl/new-nrepl-server
-     :opts {{:port [:nrepl :port]} 3001}}}
-   :http
-   {:public-resources
-    {:ctr modular.bidi/new-web-resources
-     :opts {:uri-context "/public"
-            :resource-prefix "public"}}
-    :webrouter
-    {:ctr modular.bidi/new-router
-     :using [:public-resources]}
-    :webhead
-    {:ctr modular.ring/new-web-request-handler-head
-     :using {:request-handler :webrouter}}
-    :webserver
-    {:ctr modular.http-kit/new-webserver
-     :opts {{:port [:web :port]} 3000}
-     :using [:webhead]}}})
-
-(defn new-dependency-map
-  [system]
-  (merge-deps
-   (all-used-by :webhead
-                (for [[k cmp] system
-                      :when (satisfies? WebRequestMiddleware cmp)]
-                  k))
-   (all-used-by :webrouter
-                (for [[k cmp] (dissoc system :webrouter)
-                      :when (satisfies? RouteProvider cmp)]
-                  k))))
-
-(defn new-co-dependency-map
-  [system]
-  {})
-
-(defn new-system-map
-  [config]
-  (->> components
-       (map second)
-       (apply merge)
-       (make-system-map config)))
+(defn components [confg]
+  {:public-resources
+   {:cmp (make modular.bidi/new-web-resources config
+               :uri-context "/public"
+               :resource-prefix "public")}
+   :webrouter
+   {:cmp (modular.bidi/new-router)
+    :using [:public-resources (s/protocol RouteProvider)]}
+   :webhead
+   {:cmp (modular.ring/new-web-request-handler-head)
+    :using {:request-handler :webrouter
+            (s/protocol WebRequestMiddleware) (s/protocol WebRequestMiddleware)}}
+   :webserver
+   {:cmp (make modular.http-kit/new-webserver config
+               {:port [:web :port]} 3000)
+    :using [:webhead]}})
 
 (defn new-production-system
   []
-  (let [system (new-system-map (config))]
-    (-> system
-        (system-using (new-dependency-map system))
-        (system-co-using (new-co-dependency-map system)))))
+  (let [components (components (config))
+        system (->> components
+                    (map-vals :cmp)
+                    (apply concat)
+                    (apply system-map))
+        using (->> components
+                   (map-vals :using)
+                   (remove (comp nil? second))
+                   (into {}))]
+    (system-using-schema system using)))
 
 (defn start [system]
   (let [system-atom (atom system)]
     (expand system {:before-start [[identity/add-meta-key system]
                                    [co-dependency/assoc-co-dependencies system-atom]
-                                   [utils/validate-class]]
-                    :after-start [[co-dependency/update-atom-system system-atom]]})))
+                                   [ctr/validate-class]]
+                    :after-start [[co-dependency/update-atom-system system-atom]
+                                  [ctr/validate-class]]})))

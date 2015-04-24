@@ -23,16 +23,11 @@
                             [quile/component-cljs "0.2.4"]
                             [tangrammer/co-dependency "0.1.5"]
                             [milesian/aop "0.1.5"]
-                            [ib5k/component-schema "0.1.0-SNAPSHOT"]]
+                            [milesian/identity "0.1.4"]
+                            [ib5k/component-schema "0.1.2-SNAPSHOT"]]
             :css           [[garden "1.2.5"]]
             :logging       [[com.taoensso/timbre "3.4.0"]
                             [shodan "0.4.1"]]
-            :repl          [[com.cemerick/piggieback "0.2.0"]
-                            [org.clojure/tools.namespace "0.2.10"]
-                            [org.clojure/tools.nrepl "0.2.10"]
-                            [weasel "0.6.0"]
-                            [cider/cider-nrepl "0.9.0-SNAPSHOT"]
-                            [com.keminglabs/cljx "0.6.0"]]
             :schema        [[prismatic/plumbing "0.4.2"]
                             [prismatic/schema "0.4.0"]]
             :http          [[ring "1.3.2"]
@@ -58,7 +53,13 @@
                          [boot-garden "1.2.5-2"]
                          [deraen/boot-cljx "0.2.2"]
                          [jeluard/boot-notify "0.1.2"]
-                         [pleasetrythisathome/boot-component "0.1.2-SNAPSHOT"]])))
+                         [ib5k/boot-component "0.1.2-SNAPSHOT"]
+                         [com.cemerick/piggieback "0.2.0"]
+                         [org.clojure/tools.namespace "0.2.10"]
+                         [org.clojure/tools.nrepl "0.2.10"]
+                         [weasel "0.6.0"]
+                         [cider/cider-nrepl "0.9.0-SNAPSHOT"]
+                         [com.keminglabs/cljx "0.6.0"]])))
  :source-paths #{"src"}
  :resource-paths #(conj % "resources"))
 

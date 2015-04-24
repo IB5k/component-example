@@ -1,8 +1,8 @@
 (ns dev-components.visualization
-  (:require [example.utils.ctr :as ctr]
-            [clojure.pprint :refer (pprint)]
+  (:require [clojure.pprint :refer (pprint)]
             [clojure.string :as str]
             [com.stuartsierra.component :as component :refer (Lifecycle)]
+            [ib5k.component.ctr :as ctr]
             [me.raynes.fs :as fs]
             [plumbing.core :refer :all :exclude (update)]
             [rhizome.viz :as viz]

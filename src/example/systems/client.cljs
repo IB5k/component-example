@@ -1,6 +1,6 @@
 (ns example.systems.client
   (:require [example.utils.config :refer [config]]
-            [example.utils.system :refer [expand]]
+            [example.utils.system :refer [expand new-system]]
             [ib5k.component.ctr :as ctr]
             [ib5k.component.using-schema :refer [system-using-schema]]
             [plumbing.core :refer [map-vals]]

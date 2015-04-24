@@ -1,5 +1,9 @@
 (ns example.utils.system
-  (:require [example.utils.config :refer [config]]
+  (:require [ib5k.component.ctr :as ctr]
+            [ib5k.component.using-schema :as u]
+            [example.utils.config :refer [config]]
+            [plumbing.core :as p :include-macros true]
+            #+clj [milesian.identity :as identity]
             [#+clj  com.stuartsierra.component
              #+cljs quile.component
              :as component :refer [system-map system-using using]]
@@ -25,14 +29,14 @@
                              :using (s/either [s/Any]
                                               {s/Any s/Any})}}]
   (let [system (->> components
-                    (map-vals :cmp)
+                    (p/map-vals :cmp)
                     (apply concat)
                     (apply system-map))
         using (->> components
-                   (map-vals :using)
+                   (p/map-vals :using)
                    (remove (comp nil? second))
                    (into {}))]
-    (system-using-schema system using)))
+    (u/system-using-schema system using)))
 
 #+clj
 (defn start [system]

@@ -1,7 +1,7 @@
 (ns example.systems.server
   (:require [example.utils.config :refer [config]]
             [example.utils.maker :refer [make]]
-            [example.utils.system :refer [expand]]
+            [example.utils.system :refer [expand new-system]]
             [bidi.bidi :refer (RouteProvider)]
             [com.stuartsierra.component :refer [system-map]]
             [ib5k.component.ctr :as ctr]

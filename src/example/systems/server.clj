@@ -1,12 +1,8 @@
 (ns example.systems.server
   (:require [example.utils.config :refer [config]]
             [example.utils.maker :refer [make]]
-            [example.utils.system :refer [expand]]
+            [example.utils.system :refer [new-system]]
             [bidi.bidi :refer (RouteProvider)]
-            [com.stuartsierra.component :refer [system-map]]
-            [ib5k.component.ctr :as ctr]
-            [ib5k.component.using-schema :refer [system-using-schema]]
-            [milesian.identity :as identity]
             [modular.bidi]
             [modular.http-kit]
             [modular.ring :refer (WebRequestMiddleware)]

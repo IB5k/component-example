@@ -2,10 +2,14 @@
   (:require [example.utils.config :refer [config]]
             [#+clj  com.stuartsierra.component
              #+cljs quile.component
-             :as component :refer [system-map system-using using]]
+             :as component :refer [system-map]]
             #+clj [tangrammer.component.co-dependency :as co-dependency]
             #+clj  [schema.core :as s]
-            #+cljs [schema.core :as s :include-macros true]))
+            #+cljs [schema.core :as s :include-macros true]
+            #+clj [milesian.identity :as identity]
+            [ib5k.component.ctr :as ctr]
+            [ib5k.component.using-schema :refer [system-using-schema]]
+            [plumbing.core :refer [map-vals]]))
 
 ;; taken from https://github.com/milesian/BigBang/blob/master/src/milesian/bigbang.clj
 (defn expand

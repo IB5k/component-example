@@ -81,12 +81,12 @@
 (bootlaces! +version+)
 
 (task-options!
- pom {:project 'pleasetrythisathome/component-example
+ pom {:project 'ib5k/component-example
       :version +version+
       :description "Component system example repo with all the trimmings"
       :license {"Eclipse Public License" "http://www.eclipse.org/legal/epl-v10.html"}
-      :url "https://github.com/pleasetrythisathome/component-example"
-      :scm {:url "https://github.com/pleasetrythisathome/component-example"}}
+      :url "https://github.com/ib5k/component-example"
+      :scm {:url "https://github.com/ib5k/component-example"}}
  aot {:namespace #{'example.main}}
  jar {:main 'example.main
       :file "example.jar"}

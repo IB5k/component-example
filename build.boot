@@ -122,7 +122,7 @@
    (reload-system :system-var 'dev/new-development-system
                   :start-var 'example.systems.server/start)
    (reload-system-cljs :system-var 'example.systems.client/new-production-system
-                       :start-var 'example.utils.system/start)
+                       :start-var 'example.systems.client/start)
    (garden :pretty-print true)
    (cljs :source-map true
          :pretty-print true)))

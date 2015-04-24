@@ -9,6 +9,12 @@
             [schema.core :as s :include-macros true]
             [shodan.console :as c :include-macros true]))
 
+(defn components []
+  {})
+
+(defn new-production-system
+  []
+  (new-system (components (config))))
 (enable-console-print!)
 
 (defn components [config]

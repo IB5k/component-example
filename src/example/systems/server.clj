@@ -37,21 +37,4 @@
 
 (defn new-production-system
   []
-  (let [components (components (config))
-        system (->> components
-                    (map-vals :cmp)
-                    (apply concat)
-                    (apply system-map))
-        using (->> components
-                   (map-vals :using)
-                   (remove (comp nil? second))
-                   (into {}))]
-    (system-using-schema system using)))
-
-(defn start [system]
-  (let [system-atom (atom system)]
-    (expand system {:before-start [[identity/add-meta-key system]
-                                   [co-dependency/assoc-co-dependencies system-atom]
-                                   [ctr/validate-class]]
-                    :after-start [[co-dependency/update-atom-system system-atom]
-                                  [ctr/validate-class]]})))
+  (new-system (components (config))))

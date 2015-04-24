@@ -15,20 +15,18 @@
        (mapcat flatten-vals)
        (into [])))
 
-(def deps '{:async         [[org.clojure/core.async "0.1.346.0-17112a-alpha"]]
-            :clojure       [[org.clojure/clojure "1.7.0-beta1"]]
-            :clojurescript [[org.clojure/clojurescript "0.0-3196"]]
-            :component
-            {:clj          [[com.stuartsierra/component "0.2.3"]
+(def deps '{:clojure       [[org.clojure/clojure "1.7.0-beta1"]
+                            [org.clojure/clojurescript "0.0-3196"]
+                            [org.clojure/tools.reader "0.9.1"]
+                            [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
+            :component     [[com.stuartsierra/component "0.2.3"]
+                            [quile/component-cljs "0.2.4"]
                             [tangrammer/co-dependency "0.1.5"]
-                            [milesian/aop "0.1.5"]]
-             :cljs         [[quile/component-cljs "0.2.4"]]}
-            :filesystem
-            {:io           [[me.raynes/fs "1.4.6"]]}
-            :garden        [[garden "1.2.5"]]
-            :logging
-            {:clj          [[com.taoensso/timbre "3.4.0"]]
-             :cljs         [[shodan "0.4.1"]]}
+                            [milesian/aop "0.1.5"]
+                            [ib5k/component-schema "0.1.0-SNAPSHOT"]]
+            :css           [[garden "1.2.5"]]
+            :logging       [[com.taoensso/timbre "3.4.0"]
+                            [shodan "0.4.1"]]
             :repl          [[com.cemerick/piggieback "0.2.0"]
                             [org.clojure/tools.namespace "0.2.10"]
                             [org.clojure/tools.nrepl "0.2.10"]
@@ -40,7 +38,7 @@
             :http          [[ring "1.3.2"]
                             [juxt.modular/bidi "0.9.2"]
                             [juxt.modular/http-kit "0.5.4"]]
-            :reader        [[org.clojure/tools.reader "0.9.1"]]
+            :utils         [[me.raynes/fs "1.4.6"]]
             :viz           [[rhizome "0.2.4"]]})
 
 (set-env!
@@ -106,18 +104,6 @@
    (cljs-test-node-runner)
    (cljs :source-map true
          :pretty-print true)
-   (test)
-   (run-cljs-test)))
-
-(deftask test-auto []
-  (set-env! :source-paths #(conj % "test"))
-  (comp
-   (watch)
-   (notify)
-   (cljx)
-   (cljs-test-node-runner)
-   (cljs :source-map true
-         :optimizations :none)
    (test)
    (run-cljs-test)))
 
